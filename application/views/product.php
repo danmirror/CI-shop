@@ -39,7 +39,7 @@
                 <li>
                   <figure>
                     <a class="aa-product-img" href="#"><img src="<?php echo base_url().'/assets/img/img_product/'.$p->foto;?>" alt="polo shirt img" height="150"></a>
-                    <a class="aa-add-card-btn" href="<?php echo site_url().'/Shopping/add/'?>"> <span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                    <a class="aa-add-card-btn" href="<?php echo site_url().'/Shopping/add?id='.$p->kode;?>"> <span class="fa fa-shopping-cart"></span>Add To Cart</a>
                     <figcaption>
                       <h4 class="aa-product-title"><a href="#"><?=$p->merk?></a></h4>
                       <span class="aa-product-price">Rp. <?php echo number_format($p->hargajual,2,',','.')?></span>
@@ -116,7 +116,7 @@
                               </p>
                             </div>
                             <div class="aa-prod-view-bottom">
-                              <a href="<?php echo site_url().'/Shopping/add/'?>" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                              <a href="<?php echo site_url().'/Shopping/add?id='.$p->kode;?>" class="aa-add-to-cart-btn"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                               <a href="#" class="aa-add-to-cart-btn">View Details</a>
                             </div>
                           </div>

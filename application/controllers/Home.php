@@ -9,6 +9,8 @@ class Home extends CI_Controller {
     { 
         parent::__construct(); 
         $this->load->helper(array('cookie', 'url'));
+		$this->load->model("Model_shopping");
+		$this->load->model("Model_product");
 		
 		if($this->input->cookie('login')!=''){
 			$this->login = get_cookie('login');
@@ -23,7 +25,28 @@ class Home extends CI_Controller {
 		$this->load->model("Model_product");
 		$data['product']=$this->Model_product->get_product(6);
 		$data['login'] = $this->login;
-		$this->load->view('header',$data);
+
+		$data_head['login'] = $this->login;
+		$data_head['cart'] = $this->Model_shopping->get_cart(get_cookie('name'));
+		$count = 0;
+		$price = 0;
+		$product_cart =[];
+		foreach($data['product'] as $pd)
+		{
+			foreach($data_head['cart'] as $dt)
+			{
+				if($dt->kode == $pd->kode){
+					$price += $dt->harga;
+					$count++;
+					$product_cart[]=$this->Model_product->get_product_bykode($pd->kode);
+				}
+			}
+		}
+		$data_head['count'] = $count;
+		$data_head['price'] = $price;
+		$data_head['product_cart'] = $product_cart;
+		
+		$this->load->view('header',$data_head);
 		$this->load->view('home',$data);
 		$this->load->view('footer');
 	}

@@ -134,32 +134,26 @@
                 <a class="aa-cart-link" href="#">
                   <span class="fa fa-shopping-basket"></span>
                   <span class="aa-cart-title">SHOPPING CART</span>
-                  <span class="aa-cart-notify">2</span>
+                  <span class="aa-cart-notify"><?=$count?></span>
                 </a>
                 <div class="aa-cartbox-summary">
                   <ul>
+                    <?php foreach($product_cart as $carts):?>
                     <li>
-                      <a class="aa-cartbox-img" href="#"><img src="<?php echo base_url().'/assets/img/'; ?>woman-small-2.jpg" alt="img"></a>
+                      <a class="aa-cartbox-img" href="#"><img src="<?php echo base_url().'/assets/img/img_product/'.$carts->foto;?>" alt="img"></a>
                       <div class="aa-cartbox-info">
                         <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
+                        <p><?= $carts->merk?></p>
                       </div>
                       <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
                     </li>
-                    <li>
-                      <a class="aa-cartbox-img" href="#"><img src="<?php echo base_url().'/assets/img/'; ?>woman-small-1.jpg" alt="img"></a>
-                      <div class="aa-cartbox-info">
-                        <h4><a href="#">Product Name</a></h4>
-                        <p>1 x $250</p>
-                      </div>
-                      <a class="aa-remove-product" href="#"><span class="fa fa-times"></span></a>
-                    </li>                    
+                    <?php endforeach; ?>
                     <li>
                       <span class="aa-cartbox-total-title">
                         Total
                       </span>
                       <span class="aa-cartbox-total-price">
-                        $500
+                        <?=$price?>
                       </span>
                     </li>
                   </ul>

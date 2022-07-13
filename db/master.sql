@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 4.9.5deb2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jul 12, 2022 at 01:17 PM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.8
+-- Host: localhost:3306
+-- Generation Time: Jul 13, 2022 at 11:34 PM
+-- Server version: 8.0.28-0ubuntu0.20.04.3
+-- PHP Version: 7.4.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -37,9 +38,9 @@ CREATE TABLE `web_barang` (
   `hargapokok` double DEFAULT NULL,
   `hargajual` double DEFAULT NULL,
   `diskonjual` double DEFAULT NULL,
-  `stok` int(11) DEFAULT NULL,
+  `stok` int DEFAULT NULL,
   `foto` varchar(255) DEFAULT NULL,
-  `deskripsi` longtext DEFAULT NULL
+  `deskripsi` longtext
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -75,9 +76,9 @@ INSERT INTO `web_barang` (`kode`, `merk`, `kategori`, `satuan`, `hargabeli`, `di
 --
 
 CREATE TABLE `web_kategori` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `kategori` char(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `web_kategori`
@@ -105,17 +106,18 @@ CREATE TABLE `web_order` (
   `trans_id` char(100) NOT NULL,
   `id_plg` char(20) DEFAULT NULL,
   `tgl_order` date DEFAULT NULL,
-  `total_bayar` double DEFAULT NULL
+  `harga` double DEFAULT NULL,
+  `kode` varchar(200) NOT NULL,
+  `qty` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `web_order`
 --
 
-INSERT INTO `web_order` (`trans_id`, `id_plg`, `tgl_order`, `total_bayar`) VALUES
-('1-06032022-065418', '1', '2022-03-06', 23875000),
-('1-27022022-045014', '1', '2022-02-27', 23875000),
-('2-09032022-050552', '2', '2022-03-09', 18295000);
+INSERT INTO `web_order` (`trans_id`, `id_plg`, `tgl_order`, `harga`, `kode`, `qty`) VALUES
+('1657728657', 'dandan', '2022-07-13', 3500000, 'L002', 0),
+('1657728785', 'dandan', '2022-07-13', 7000000, 'L001', 0);
 
 -- --------------------------------------------------------
 
@@ -127,21 +129,9 @@ CREATE TABLE `web_order_detail` (
   `trans_id` char(100) NOT NULL DEFAULT '',
   `kode_brg` char(20) NOT NULL DEFAULT '',
   `harga_jual` double DEFAULT NULL,
-  `qty` int(11) DEFAULT NULL,
+  `qty` int DEFAULT NULL,
   `bayar` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `web_order_detail`
---
-
-INSERT INTO `web_order_detail` (`trans_id`, `kode_brg`, `harga_jual`, `qty`, `bayar`) VALUES
-('1-06032022-065418', 'B002', 13625000, 1, 13625000),
-('1-06032022-065418', 'B006', 10250000, 1, 10250000),
-('1-27022022-045014', 'B002', 13625000, 1, 13625000),
-('1-27022022-045014', 'B006', 10250000, 1, 10250000),
-('2-09032022-050552', 'B002', 13625000, 1, 13625000),
-('2-09032022-050552', 'B003', 4670000, 1, 4670000);
 
 -- --------------------------------------------------------
 
@@ -150,7 +140,7 @@ INSERT INTO `web_order_detail` (`trans_id`, `kode_brg`, `harga_jual`, `qty`, `ba
 --
 
 CREATE TABLE `web_pelanggan` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL,
   `nama` varchar(200) DEFAULT NULL,
   `alamat` varchar(200) DEFAULT NULL,
   `kota` char(100) DEFAULT NULL,
@@ -167,7 +157,10 @@ CREATE TABLE `web_pelanggan` (
 
 INSERT INTO `web_pelanggan` (`id`, `nama`, `alamat`, `kota`, `provinsi`, `email`, `telp`, `userID`, `PASSWORD`) VALUES
 (1, 'edi', 'Jl Patimura No 5', 'Semarang', 'Jawa Tengah', 'edi@yahoo.com', '024898232', 'edi', '8457dff5491b024de6b03e30b609f7e8'),
-(2, 'user1', '-', '-', '-', 'user1@yahoo.com', '-', 'user1', '24c9e15e52afc47c225b757e7bee1f9d');
+(2, 'user1', '-', '-', '-', 'user1@yahoo.com', '-', 'user1', '24c9e15e52afc47c225b757e7bee1f9d'),
+(3, 'danu', 'dan', 'da', 'dan', 'dan', 'da', 'danu', '9180b4da3f0c7e80975fad685f7f134e'),
+(4, '', '', '', '', '', '', '', 'd41d8cd98f00b204e9800998ecf8427e'),
+(5, 'dandan', 'weg', 'bekasi', 'wge', 'veg', '09090', 'dandan', 'a29e5a0efaa2b1521ebea7cf10cd0eab');
 
 --
 -- Indexes for dumped tables
@@ -211,13 +204,13 @@ ALTER TABLE `web_pelanggan`
 -- AUTO_INCREMENT for table `web_kategori`
 --
 ALTER TABLE `web_kategori`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `web_pelanggan`
 --
 ALTER TABLE `web_pelanggan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
