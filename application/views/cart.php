@@ -37,14 +37,22 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <?php foreach($product_cart as $cart):?>
+                      <?php foreach($product_cart as $product):?>
                       <tr>
-                        <td><a class="remove" href="#"><fa class="fa fa-close"></fa></a></td>
-                        <td><a href="#"><img src="<?php echo base_url().'/assets/img/img_product/'.$cart->foto;?>" alt="img"></a></td>
-                        <td><a class="aa-cart-title" href="#"><?= $cart->merk;?></a></td>
-                        <td><?= $cart->hargabeli;?></td>
-                        <td><input class="aa-cart-quantity" type="number" value="1"></td>
-                        <td><?= $cart->hargabeli;?></td>
+                        <td><a class="remove" href="<?php echo site_url().'/cart/delete/'.$product->kode;?>"><fa class="fa fa-close"></fa></a></td>
+                        <td><a href="#"><img src="<?php echo base_url().'/assets/img/img_product/'.$product->foto;?>" alt="img"></a></td>
+                        <td><a class="aa-cart-title" href="#"><?= $product->merk;?></a></td>
+                        <td><?= $product->hargabeli;?></td>
+                        <?php 
+                        foreach($cart as $carts):
+                          if($product->kode == $carts->kode):
+                          ?>
+                            <td><input class="aa-cart-quantity" type="number" value="<?= $carts->qty;?>"></td>
+                        <?php 
+                          endif; 
+                        endforeach;
+                        ?>
+                        <td><?= $product->hargabeli;?></td>
                       </tr>
                       <?php endforeach;?>
                      
@@ -71,7 +79,7 @@
                    </tr>
                    <tr>
                      <th>Total</th>
-                     <td><?=$price;?></td>
+                     <td><?=$price;?> </td>
                    </tr>
                  </tbody>
                </table>

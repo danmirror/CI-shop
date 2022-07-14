@@ -1,15 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Shopping extends CI_Controller {
+class Cart extends CI_Controller {
 
 
 	public function __construct(){
 		parent::__construct();
 		$this->load->helper(array('cookie', 'url')); 
 		$this->load->model("Model_product");
-		$this->load->model("Model_shopping");
-		$this->load->library("cart"); //Apa cart?
+		$this->load->model("Model_cart");
 		
 		if($this->input->cookie('login')!=''){
 			$this->login = get_cookie('login');
@@ -25,7 +24,7 @@ class Shopping extends CI_Controller {
 		$data['kategori']=$this->Model_product->get_kategori();
 
 		$data_head['login'] = $this->login;
-		$data_head['cart'] = $this->Model_shopping->get_cart(get_cookie('name'));
+		$data_head['cart'] = $this->Model_cart->get_cart(get_cookie('name'));
 		$count = 0;
 		$price = 0;
 		$product_cart =[];
@@ -54,8 +53,14 @@ class Shopping extends CI_Controller {
 		$get = $this->input->get(); //mengambil inputan pada detail
 		$product =$this->Model_product->get_product_bykode($get['id']);
 
+		$cart = $this->Model_cart->get_cart(get_cookie('name'));
+
+		$this->update();
+		// var_dump("gak masuk");
+		// 		exit();
+
 		if($this->input->cookie('login')==''){
-			redirect('product');
+			return redirect('product');
 		}
 
 		$data=array(
@@ -64,21 +69,57 @@ class Shopping extends CI_Controller {
 			'kode_brg' 		=> $get['id'],
 			'harga' 		=> $product->hargajual,  
 			'qty'			=> 1,
-			'total_bayar'	=> $product->hargabeli, 
 			'tgl_order'		=> time(),
 		);
-		$this->Model_shopping->insert_cart($data); 
+		$this->Model_cart->insert_cart($data); 
 
-		redirect('product');
+		return redirect('product');
 
 	}
+	public function update()
+	{
+		$get = $this->input->get(); //mengambil inputan pada detail
+		$product =$this->Model_product->get_product_bykode($get['id']);
+
+		$cart = $this->Model_cart->get_cart(get_cookie('name'));
+
+		foreach($cart as $carts)
+		{
+
+			if($carts->kode == $product->kode){
+				$data=array(
+					'id_plg'		=> get_cookie('name'),
+					'kode_brg' 		=> $get['id'],
+					'qty'			=> $carts->qty+1,
+					'harga'	=> $product->hargajual*($carts->qty+1), 
+				);
+				$this->Model_cart->update_cart($data); 
+				return redirect('product');
+			}
+			
+		}
+	
+	}	
+
 	public function delete($rowid){
-		$data=array(
-			'rowid'=>$rowid,
-			'qty'=>0
-		 );
-		$this->cart->update($data);
-		redirect('Shopping');
+		$get = $this->input->get(); //mengambil inputan pada detail
+		$product =$this->Model_product->get_product_bykode($rowid);
+
+		$cart = $this->Model_cart->get_cart(get_cookie('name'));
+
+		foreach($cart as $carts)
+		{
+
+			if($carts->kode == $product->kode){
+				$data=array(
+					'id_plg'		=> get_cookie('name'),
+					'kode_brg' 		=> $rowid,
+				);
+				$this->Model_cart->delete_cart($data); 
+				return redirect('cart');
+			}
+			
+		}
 	}
 
 }

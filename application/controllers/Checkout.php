@@ -3,24 +3,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Checkout extends CI_Controller {
 
     public function __construct(){
-    parent::__construct();
-    $this->load->model("Model_product");
-    $this->load->model("Model_shopping");
-    $this->load->library("cart");
+        parent::__construct(); 
+        $this->load->helper(array('cookie', 'url'));
+		$this->load->model("Model_cart");
+		$this->load->model("Model_product");
+
+		if($this->input->cookie('login')!=''){
+			$this->login = get_cookie('login');
+		}
+		else{
+			$this->login = false;
+		}
     }
     public function index()
     {
-        if (!isset($this->session->userdata['logged_in'])) {
-            redirect('Login',$data);
-        }else{
-        $id = $this->session->userdata['logged_in']['id'];
-        $this->load->model("Model_pelanggan");
-        $data['pelanggan']=$this->Model_pelanggan->get_pelanggan_byid($id);
-        $data['cart_list']=$this->cart->contents();
-        $this->load->view('header');
-        $this->load->view('checkout',$data);
-        $this->load->view('footer');
-        }
+        // if (!isset($this->session->userdata['logged_in'])) {
+        //     redirect('Login',$data);
+        // }else{
+            $data['product']=$this->Model_product->get_all_product();
+            $data['kategori']=$this->Model_product->get_kategori();
+    
+            $data_head['login'] = $this->login;
+            $data_head['cart'] = $this->Model_cart->get_cart(get_cookie('name'));
+            $count = 0;
+            $price = 0;
+            $product_cart =[];
+            foreach($data['product'] as $pd)
+            {
+                foreach($data_head['cart'] as $dt)
+                {
+                    if($dt->kode == $pd->kode){
+                        $price += $dt->harga;
+                        $count++;
+                        $product_cart[]=$this->Model_product->get_product_bykode($pd->kode);
+                    }
+                }
+            }
+            $data_head['count'] = $count;
+            $data_head['price'] = $price;
+            $data_head['product_cart'] = $product_cart;
+    
+            // var_dump($this->login);
+            // exit();
+            $this->load->view('header',$data_head);
+            $this->load->view('checkout',$data);
+            $this->load->view('footer');
+        // }
     }
     public function proses(){
         $idpelanggan=($this->session->userdata['logged_in']['id']);
@@ -45,7 +73,7 @@ class Checkout extends CI_Controller {
             "ongkir"=>$ongkir,
             "totalbayar"=>$totalbayar,
             "metodebayar"=>$post['rdmetode']
-            );
+        );
         //print_r($data);
         $this->Model_shopping->save($data);
         $this->cart->destroy();

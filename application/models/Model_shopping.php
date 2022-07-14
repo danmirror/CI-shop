@@ -1,33 +1,6 @@
 <?php
 Class Model_shopping extends CI_Model 
 {
-
-    public function insert_cart($data)
-    {
-        $date = date("Y-m-d",$data['tgl_order']);
-        $sql="insert into web_order(trans_id,id_plg,tgl_order,harga,kode,qty)
-        values('".$data['trans_id']."','".$data['id_plg']."','$date','".$data['harga']."','".$data['kode_brg']."','".$data['qty']."')";
-        
-        // $sql_detail="insert into web_order_detail(trans_id,kode_brg,harga,qty,bayar)
-        // values('$data[trans_id]','$data[kode_brg]','$data[harga]','$data[qty]','$data[total_bayar]')";
-        
-
-        //insert order and order detail
-        if($this->db->query($sql)) // && $this->db->query($sql_detail))
-            return true;    
-        else
-            return false;
-
-    }
-    public function get_cart($id)
-    {
-        // var_dump($id);
-        // exit();
-        $sql="select * from web_order where id_plg='$id' order by
-        trans_id desc";
-        return $this->db->query($sql)->result();
-    }
-
     public function get_order_byid($id)
     {
         return $this->db->query("select p.nama,p.telp, o.*, od.kode_brg,

@@ -9,7 +9,7 @@ class Home extends CI_Controller {
     { 
         parent::__construct(); 
         $this->load->helper(array('cookie', 'url'));
-		$this->load->model("Model_shopping");
+		$this->load->model("Model_cart");
 		$this->load->model("Model_product");
 		
 		if($this->input->cookie('login')!=''){
@@ -27,7 +27,7 @@ class Home extends CI_Controller {
 		$data['login'] = $this->login;
 
 		$data_head['login'] = $this->login;
-		$data_head['cart'] = $this->Model_shopping->get_cart(get_cookie('name'));
+		$data_head['cart'] = $this->Model_cart->get_cart(get_cookie('name'));
 		$count = 0;
 		$price = 0;
 		$product_cart =[];

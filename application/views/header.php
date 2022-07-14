@@ -196,7 +196,7 @@
             <ul class="nav navbar-nav">
               <li><a href="<?php echo site_url().'/Home'; ?>">Home</a></li>
               <li><a href="<?php echo site_url().'/Product'; ?>">Product</a></li>
-              <li><a href="<?php echo site_url().'/Shopping'; ?>">Cart</a></li>           
+              <li><a href="<?php echo site_url().'/Cart'; ?>">Cart</a></li>           
               <li><a href="<?php echo site_url().'/Checkout'; ?>">Checkout</a></li>
               
                
