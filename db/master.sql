@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jul 13, 2022 at 11:34 PM
+-- Generation Time: Jul 14, 2022 at 07:31 AM
 -- Server version: 8.0.28-0ubuntu0.20.04.3
 -- PHP Version: 7.4.3
 
@@ -77,8 +77,8 @@ INSERT INTO `web_barang` (`kode`, `merk`, `kategori`, `satuan`, `hargabeli`, `di
 
 CREATE TABLE `web_kategori` (
   `id` int NOT NULL,
-  `kategori` char(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `kategori` char(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `web_kategori`
