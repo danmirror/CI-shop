@@ -77,7 +77,7 @@ INSERT INTO `web_barang` (`kode`, `merk`, `kategori`, `satuan`, `hargabeli`, `di
 
 CREATE TABLE `web_kategori` (
   `id` int NOT NULL,
-  `kategori` varchar(20) DEFAULT NULL,
+  `kategori` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
