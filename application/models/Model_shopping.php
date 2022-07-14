@@ -4,9 +4,9 @@ Class Model_shopping extends CI_Model
 
     public function insert_cart($data)
     {
-        $date = date("Y-m-d",$data[tgl_order]);
+        $date = date("Y-m-d",$data['tgl_order']);
         $sql="insert into web_order(trans_id,id_plg,tgl_order,harga,kode,qty)
-        values('$data[trans_id]','$data[id_plg]','$date','$data[harga]','$data[kode_brg]','$data[qty]')";
+        values('".$data['trans_id']."','".$data['id_plg']."','$date','".$data['harga']."','".$data['kode_brg']."','".$data['qty']."')";
         
         // $sql_detail="insert into web_order_detail(trans_id,kode_brg,harga,qty,bayar)
         // values('$data[trans_id]','$data[kode_brg]','$data[harga]','$data[qty]','$data[total_bayar]')";
